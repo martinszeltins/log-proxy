@@ -43,13 +43,15 @@ A simple Node.js HTTP server for remote logging during debugging sessions. When 
 ### Create a simple wrapper function
 
 ```javascript
-const log = (message: string) => {
-    fetch('http://localhost:3000', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message })
+const log = (...messages) => {
+    messages.forEach(message => {
+        fetch('http://localhost:3000', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
     });
 }
 ```
@@ -57,6 +59,8 @@ const log = (message: string) => {
 ```javascript
 log('Hello, this is a test log message!');
 log(userObject);
+log('User ID:', 12345, 'Status:', 'active', { timestamp: Date.now() });
+log('Multiple', 'arguments', 'are', 'supported!');
 ```
 
 ## Usage Examples
