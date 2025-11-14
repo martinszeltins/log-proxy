@@ -6,14 +6,12 @@ A simple Node.js HTTP server for remote logging during debugging sessions. When 
 
 1. **Install dependencies:**
    ```bash
-   npm install
+   $ npm install
    ```
 
 2. **Start the server:**
    ```bash
-   npm start
-   # or
-   node app.js
+   $ node app.js
    ```
 
 3. **Send log messages:**
