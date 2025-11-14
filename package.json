@@ -1,0 +1,16 @@
+{
+  "name": "log-proxy",
+  "version": "1.0.0",
+  "description": "Simple HTTP log proxy for debugging",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "keywords": ["logging", "debug", "proxy"],
+  "author": "",
+  "license": "MIT"
+}
