@@ -11,7 +11,7 @@ const testMessages = [
 
 async function sendLogMessage(messageData) {
     try {
-        const response = await fetch('http://localhost:3000', {
+        const response = await fetch('http://localhost:23465', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ async function runTest() {
     
     // Test server availability
     try {
-        const response = await fetch('http://localhost:3000');
+        const response = await fetch('http://localhost:23465');
         const info = await response.json();
         console.log('📡 Server is running:', info.status);
     } catch (error) {

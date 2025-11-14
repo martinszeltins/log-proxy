@@ -19,7 +19,7 @@ A simple Node.js HTTP server for remote logging during debugging sessions. When 
 3. **Send log messages:**
    ```javascript
    // Basic log message (defaults to INFO level)
-   fetch('http://localhost:3000', {
+   fetch('http://localhost:23465', {
        method: 'POST',
        headers: {
            'Content-Type': 'application/json'
@@ -28,7 +28,7 @@ A simple Node.js HTTP server for remote logging during debugging sessions. When 
    });
 
    // Log message with specific level
-   fetch('http://localhost:3000', {
+   fetch('http://localhost:23465', {
        method: 'POST',
        headers: {
            'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ A simple Node.js HTTP server for remote logging during debugging sessions. When 
 ```javascript
 const log = (...messages) => {
     messages.forEach(message => {
-        fetch('http://localhost:3000', {
+        fetch('http://localhost:23465', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -68,14 +68,14 @@ log('Multiple', 'arguments', 'are', 'supported!');
 ### From JavaScript/Browser
 ```javascript
 // Simple debug message (defaults to INFO)
-fetch('http://localhost:3000', {
+fetch('http://localhost:23465', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: 'User clicked button' })
 });
 
 // Log with specific level
-fetch('http://localhost:3000', {
+fetch('http://localhost:23465', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ 
@@ -85,7 +85,7 @@ fetch('http://localhost:3000', {
 });
 
 // Error logging
-fetch('http://localhost:3000', {
+fetch('http://localhost:23465', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ 
@@ -96,7 +96,7 @@ fetch('http://localhost:3000', {
 
 // Debug logging with variable values
 const userData = { id: 123, name: 'John' };
-fetch('http://localhost:3000', {
+fetch('http://localhost:23465', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ 
@@ -109,17 +109,17 @@ fetch('http://localhost:3000', {
 ### From cURL
 ```bash
 # Basic INFO log
-curl -X POST http://localhost:3000 \
+curl -X POST http://localhost:23465 \
   -H "Content-Type: application/json" \
   -d '{"message": "Test message from cURL"}'
 
 # Error log
-curl -X POST http://localhost:3000 \
+curl -X POST http://localhost:23465 \
   -H "Content-Type: application/json" \
   -d '{"message": "Connection timeout", "level": "ERROR"}'
 
 # Warning log
-curl -X POST http://localhost:3000 \
+curl -X POST http://localhost:23465 \
   -H "Content-Type: application/json" \
   -d '{"message": "Memory usage above 80%", "level": "WARN"}'
 ```
@@ -129,16 +129,45 @@ curl -X POST http://localhost:3000 \
 import requests
 
 # Basic log
-requests.post('http://localhost:3000', 
+requests.post('http://localhost:23465', 
     json={'message': 'Debug message from Python'})
 
 # Error log
-requests.post('http://localhost:3000', 
+requests.post('http://localhost:23465', 
     json={'message': 'Database connection failed', 'level': 'ERROR'})
 
 # Debug log
-requests.post('http://localhost:3000', 
+requests.post('http://localhost:23465', 
     json={'message': 'Processing user ID: 12345', 'level': 'DEBUG'})
+```
+
+### From PHP
+
+Create a simple wrapper function:
+
+```php
+function log_message(...$messages) {
+    foreach ($messages as $message) {
+        $data = json_encode(['message' => $message]);
+        
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => 'Content-Type: application/json',
+                'content' => $data
+            ]
+        ]);
+        
+        file_get_contents('http://localhost:23465', false, $context);
+    }
+}
+```
+
+```php
+log_message('Hello, this is a test log message!');
+log_message($userObject);
+log_message('User ID:', 12345, 'Status:', 'active', ['timestamp' => time()]);
+log_message('Multiple', 'arguments', 'are', 'supported!');
 ```
 
 ## Test Script
@@ -187,7 +216,7 @@ The output includes:
 
 ## Configuration
 
-The server runs on port 3000 by default. You can modify the `port` variable in `app.js` if needed.
+The server runs on port 23465 by default. You can modify the `port` variable in `app.js` if needed.
 
 ## Stopping the Server
 

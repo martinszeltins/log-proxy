@@ -1,7 +1,7 @@
 const express = require('express');
 const chalk = require('chalk');
 const app = express();
-const port = 3000;
+const port = 23465;
 
 // Color helper functions using chalk
 const colors = {
