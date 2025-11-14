@@ -1,17 +1,25 @@
 const express = require('express');
+const chalk = require('chalk');
 const app = express();
 const port = 3000;
 
-// ANSI color codes for terminal output
+// Color helper functions using chalk
 const colors = {
-    reset: '\x1b[0m',
-    gray: '\x1b[90m',
-    white: '\x1b[37m',
-    green: '\x1b[32m',
-    yellow: '\x1b[33m',
-    red: '\x1b[31m',
-    cyan: '\x1b[36m',
-    magenta: '\x1b[35m'
+    gray: chalk.gray,
+    white: chalk.white,
+    green: chalk.green,
+    yellow: chalk.yellow,
+    red: chalk.red,
+    cyan: chalk.cyan,
+    magenta: chalk.magenta,
+    blue: chalk.blue,
+    // JSON syntax highlighting colors
+    jsonKey: (text) => chalk.blue.bold(text),
+    jsonString: chalk.green,
+    jsonNumber: chalk.yellow,
+    jsonBoolean: chalk.magenta,
+    jsonNull: chalk.gray,
+    jsonBracket: chalk.white
 };
 
 // Middleware to parse JSON bodies
@@ -33,6 +41,48 @@ app.use((req, res, next) => {
     }
 });
 
+// Helper function to detect if a value is a JSON object/array
+function isJsonObject(value) {
+    return value !== null && 
+           typeof value === 'object' && 
+           (Array.isArray(value) || value.constructor === Object);
+}
+
+// Helper function to apply syntax highlighting to JSON
+function highlightJson(jsonString) {
+    // Simple approach - just colorize the JSON without complex regex
+    const lines = jsonString.split('\n');
+    return lines.map(line => {
+        let coloredLine = line;
+        
+        // Color property names (keys) - blue
+        coloredLine = coloredLine.replace(/"([^"]+)"(?=\s*:)/g, (match, key) => 
+            chalk.blue.bold(`"${key}"`));
+        
+        // Color string values - green  
+        coloredLine = coloredLine.replace(/"([^"]+)"(?!\s*:)/g, (match) => 
+            chalk.green(match));
+        
+        // Color numbers - yellow
+        coloredLine = coloredLine.replace(/:\s*(-?\d+\.?\d*)/g, (match, num) => 
+            `: ${chalk.yellow(num)}`);
+        
+        // Color booleans - magenta
+        coloredLine = coloredLine.replace(/:\s*(true|false)/g, (match, bool) => 
+            `: ${chalk.magenta(bool)}`);
+        
+        // Color null - gray
+        coloredLine = coloredLine.replace(/:\s*(null)/g, (match, nullVal) => 
+            `: ${chalk.gray(nullVal)}`);
+        
+        // Color braces and brackets - white
+        coloredLine = coloredLine.replace(/([{}[\],])/g, (match) => 
+            chalk.white(match));
+            
+        return coloredLine;
+    }).join('\n');
+}
+
 // Helper function to format timestamp
 function getTimestamp() {
     const now = new Date();
@@ -43,16 +93,41 @@ function getTimestamp() {
 function logMessage(message, level = 'INFO') {
     const timestamp = getTimestamp();
     const levelColors = {
-        'INFO': colors.green,
-        'WARN': colors.yellow,
-        'ERROR': colors.red,
-        'DEBUG': colors.cyan
+        'INFO': chalk.green,
+        'WARN': chalk.yellow,
+        'ERROR': chalk.red,
+        'DEBUG': chalk.cyan
     };
     
-    const levelColor = levelColors[level] || colors.white;
-    const formattedLog = `${colors.gray}[${timestamp}]${colors.reset} ${levelColor}${level}:${colors.reset} ${colors.white}${message}${colors.reset}`;
+    const levelColor = levelColors[level] || chalk.white;
+    const timestampFormatted = chalk.gray(`[${timestamp}]`);
+    const levelFormatted = levelColor(`${level}:`);
     
-    console.log(formattedLog);
+    // Check if message is a JSON object
+    if (isJsonObject(message)) {
+        const jsonString = JSON.stringify(message, null, 2);
+        console.log(`${timestampFormatted} ${levelFormatted}`);
+        // Simple colored JSON output without complex syntax highlighting
+        console.log(chalk.white(jsonString));
+    } else {
+        // Handle string messages (check if string contains JSON)
+        if (typeof message === 'string') {
+            try {
+                const parsed = JSON.parse(message);
+                if (isJsonObject(parsed)) {
+                    const jsonString = JSON.stringify(parsed, null, 2);
+                    console.log(`${timestampFormatted} ${levelFormatted}`);
+                    console.log(chalk.white(jsonString));
+                    return;
+                }
+            } catch (e) {
+                // Not JSON, continue with regular formatting
+            }
+        }
+        
+        const messageFormatted = chalk.white(message);
+        console.log(`${timestampFormatted} ${levelFormatted} ${messageFormatted}`);
+    }
 }
 
 // Main logging endpoint
@@ -129,12 +204,12 @@ app.listen(port, () => {
     logMessage('Log Proxy Server Started!', 'INFO');
     logMessage(`Listening on: http://localhost:${port}`, 'INFO');
     logMessage(`Send logs via: POST http://localhost:${port}`, 'INFO');
-    console.log(`\n${colors.gray}Example usage:${colors.reset}`);
-    console.log(`${colors.cyan}fetch('http://localhost:${port}', {${colors.reset}`);
-    console.log(`${colors.cyan}    method: 'POST',${colors.reset}`);
-    console.log(`${colors.cyan}    headers: { 'Content-Type': 'application/json' },${colors.reset}`);
-    console.log(`${colors.cyan}    body: JSON.stringify({ message: 'Your debug message' })${colors.reset}`);
-    console.log(`${colors.cyan}});${colors.reset}`);
+    console.log(`\n${chalk.gray('Example usage:')}`);
+    console.log(`${chalk.cyan(`fetch('http://localhost:${port}', {`)}`);
+    console.log(`${chalk.cyan('    method: \'POST\',')}`);
+    console.log(`${chalk.cyan('    headers: { \'Content-Type\': \'application/json\' },')}`);
+    console.log(`${chalk.cyan('    body: JSON.stringify({ message: \'Your debug message\' })')}`);
+    console.log(`${chalk.cyan('});')}`);
     logMessage('Waiting for log messages...', 'INFO');
 });
 
