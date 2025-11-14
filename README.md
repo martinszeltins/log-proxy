@@ -124,23 +124,6 @@ curl -X POST http://localhost:23465 \
   -d '{"message": "Memory usage above 80%", "level": "WARN"}'
 ```
 
-### From Python
-```python
-import requests
-
-# Basic log
-requests.post('http://localhost:23465', 
-    json={'message': 'Debug message from Python'})
-
-# Error log
-requests.post('http://localhost:23465', 
-    json={'message': 'Database connection failed', 'level': 'ERROR'})
-
-# Debug log
-requests.post('http://localhost:23465', 
-    json={'message': 'Processing user ID: 12345', 'level': 'DEBUG'})
-```
-
 ### From PHP
 
 Create a simple wrapper function:
