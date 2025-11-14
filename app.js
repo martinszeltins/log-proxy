@@ -22,11 +22,11 @@ const colors = {
     jsonBracket: chalk.white
 };
 
-// Middleware to parse JSON bodies
-app.use(express.json());
+// Middleware to parse JSON bodies with increased limit (50mb for large log payloads)
+app.use(express.json({ limit: '50mb' }));
 
-// Middleware to parse URL-encoded bodies (optional, for form data)
-app.use(express.urlencoded({ extended: true }));
+// Middleware to parse URL-encoded bodies with increased limit (optional, for form data)
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Enable CORS for all origins (useful for debugging from browser)
 app.use((req, res, next) => {
