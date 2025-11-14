@@ -2,15 +2,6 @@
 
 A simple Node.js HTTP server for remote logging during debugging sessions. When you can't access console logs or they don't show up, send them to this proxy server instead!
 
-## Features
-
-- ✅ Simple HTTP POST endpoint for receiving log messages
-- ✅ Pretty-formatted console output with timestamps
-- ✅ CORS enabled for browser debugging
-- ✅ Request metadata (IP, User-Agent) included in logs
-- ✅ Health check endpoint
-- ✅ Graceful shutdown handling
-
 ## Quick Start
 
 1. **Install dependencies:**
