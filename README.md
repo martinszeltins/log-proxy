@@ -2,6 +2,8 @@
 
 A simple Node.js HTTP server for remote logging during debugging sessions. When you can't access console logs or they don't show up, send them to this proxy server instead!
 
+![Screenshot](https://raw.githubusercontent.com/martinszeltins/log-proxy/refs/heads/master/screenshot.jpg)
+
 ## Quick Start
 
 1. **Install dependencies:**
