@@ -1,21 +1,22 @@
 {
-  "name": "log-proxy",
+  "name": "@martinszeltins/log-proxy",
   "version": "1.0.0",
-  "description": "Simple HTTP log proxy for debugging",
+  "description": "A simple log service. Send logs via HTTP to this service and it will print them to the console.",
+  "type": "module",
   "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "node app.js"
+  "bin": {
+    "@martinszeltins/log-proxy": "./app.js"
   },
-  "dependencies": {
-    "chalk": "^4.1.2",
-    "express": "^4.18.2"
+  "engines": {
+    "node": ">=22.0.0"
   },
   "keywords": [
-    "logging",
-    "debug",
-    "proxy"
+    "log",
+    "proxy",
+    "http",
+    "console",
+    "service"
   ],
-  "author": "",
+  "author": "Mārtiņš Zeltiņš",
   "license": "MIT"
 }
