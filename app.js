@@ -1,28 +1,9 @@
 #!/usr/bin/env node
 
-const express = require('express');
-const chalk = require('chalk');
+import express from 'express';
+import chalk from 'chalk';
 const app = express();
 const port = 23465;
-
-// Color helper functions using chalk
-const colors = {
-    gray: chalk.gray,
-    white: chalk.white,
-    green: chalk.green,
-    yellow: chalk.yellow,
-    red: chalk.red,
-    cyan: chalk.cyan,
-    magenta: chalk.magenta,
-    blue: chalk.blue,
-    // JSON syntax highlighting colors
-    jsonKey: (text) => chalk.blue.bold(text),
-    jsonString: chalk.green,
-    jsonNumber: chalk.yellow,
-    jsonBoolean: chalk.magenta,
-    jsonNull: chalk.gray,
-    jsonBracket: chalk.white
-};
 
 // Middleware to parse JSON bodies with increased limit (50mb for large log payloads)
 app.use(express.json({ limit: '50mb' }));
