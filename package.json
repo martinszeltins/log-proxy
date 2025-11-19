@@ -1,11 +1,11 @@
 {
   "name": "@martinszeltins/log-proxy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple log service. Send logs via HTTP to this service and it will print them to the console.",
   "type": "module",
   "main": "app.js",
   "bin": {
-    "@martinszeltins/log-proxy": "./app.js"
+    "log-proxy": "./app.js"
   },
   "engines": {
     "node": ">=22.0.0"
