@@ -18,5 +18,9 @@
     "service"
   ],
   "author": "Mārtiņš Zeltiņš",
-  "license": "MIT"
+  "license": "MIT",
+   "dependencies": {
+    "express": "^4.21.0",
+    "chalk": "^5.3.0"
+  }
 }
