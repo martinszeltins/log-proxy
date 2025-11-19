@@ -7,7 +7,7 @@ A simple Node.js HTTP server for remote logging during debugging sessions. When 
 ## Quick Start
 
 ```bash
-$ npx log-proxy
+$ npx @martinszeltins/log-proxy
 ```
 
 1. **Install dependencies:**
